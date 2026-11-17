@@ -7,6 +7,9 @@ language = "English"
 [gatekeeper]
 mode = "model"
 model_name = "lr"
+# Demo thresholds calibrated against the four real HTTPie PRs.
+low_threshold = 0.05
+high_threshold = 0.15
 
 [agents.analyst]
 provider = "ollama"

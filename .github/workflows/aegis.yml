@@ -22,7 +22,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: mhmtemnbgr1/Aegis@main
+      # Aegis is private; configure AEGIS_ACTION_READ_TOKEN as a read-only repo secret.
+      - uses: actions/checkout@v4
+        with:
+          repository: mhmtemnbgr1/Aegis
+          ref: main
+          token: ${{ secrets.AEGIS_ACTION_READ_TOKEN || github.token }}
+          path: .aegis-action
+
+      - uses: ./.aegis-action
         with:
           config: .github/aegis.toml
           ollama-host: ${{ secrets.AEGIS_OLLAMA_HOST }}
