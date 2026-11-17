@@ -1,0 +1,16 @@
+# Local demo uses Ollama. GitHub-hosted runs skip the LLM unless a reachable
+# AEGIS_OLLAMA_HOST secret is configured; deterministic checks still run.
+[review]
+llm_enabled = true
+language = "English"
+
+[gatekeeper]
+mode = "model"
+model_name = "lr"
+# Demo thresholds calibrated against the four real HTTPie PRs.
+low_threshold = 0.05
+high_threshold = 0.15
+
+[agents.analyst]
+provider = "ollama"
+model = "qwen2.5-coder:7b"

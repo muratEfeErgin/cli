@@ -1,0 +1,36 @@
+name: Aegis demo review
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+concurrency:
+  group: aegis-demo-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Aegis is private; configure AEGIS_ACTION_READ_TOKEN as a read-only repo secret.
+      - uses: actions/checkout@v4
+        with:
+          repository: mhmtemnbgr1/Aegis
+          ref: main
+          token: ${{ secrets.AEGIS_ACTION_READ_TOKEN || github.token }}
+          path: .aegis-action
+
+      - uses: ./.aegis-action
+        with:
+          config: .github/aegis.toml
+          ollama-host: ${{ secrets.AEGIS_OLLAMA_HOST }}
